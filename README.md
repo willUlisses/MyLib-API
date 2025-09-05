@@ -1,7 +1,7 @@
 ## Class Diagram
 ```mermaid
 classDiagram
-    class Client {
+    class User {
         +Long id
         +String name
         +int age

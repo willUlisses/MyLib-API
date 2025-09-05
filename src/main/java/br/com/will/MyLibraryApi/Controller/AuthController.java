@@ -49,8 +49,6 @@ public class AuthController {
         Authentication authenticationManager = this.authenticationManager.authenticate(usernamePassword); // we auth this usernamePassword
 
         String token = tokenService.generateToken((User) authenticationManager.getPrincipal()); // we generate the JWT with the user
-
-        return ResponseEntity.ok(new LoginResponseDTO(token)); //we return the token and an OK http status
-
+        return ResponseEntity.ok(new LoginResponseDTO(token)); //we return the token at the body and an OK http status
     }
 }

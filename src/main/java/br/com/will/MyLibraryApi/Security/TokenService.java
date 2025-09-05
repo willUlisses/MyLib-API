@@ -1,12 +1,10 @@
 package br.com.will.MyLibraryApi.Security;
-
 import br.com.will.MyLibraryApi.Model.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,18 +20,17 @@ public class TokenService {
     public String generateToken(User user) {
         try {
             Algorithm signingAlgorithm = Algorithm.HMAC256(secret); //receives secret key
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getLogin())
                     .withExpiresAt(generateTokenExpiration())
                     .sign(signingAlgorithm);
-            return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String validateToken(String token) {
+    public String verifyToken(String token) {
         try {
             Algorithm requiredAlgorithm = Algorithm.HMAC256(secret); // receives secret key
             return JWT.require(requiredAlgorithm)
@@ -49,7 +46,5 @@ public class TokenService {
     private Instant generateTokenExpiration() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
-
-
 
 }

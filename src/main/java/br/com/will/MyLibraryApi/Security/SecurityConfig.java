@@ -10,10 +10,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private TokenFilter filter;
+
+    public SecurityConfig(TokenFilter filter) {
+        this.filter = filter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -24,6 +31,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
                 )
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class) // we add a filter that auths
+                //the Username and his password and get his authorities too
                 // criar um addFilterBefore jwt para adicionar antes desses aqui
                 .build();
     }
@@ -33,7 +42,6 @@ public class SecurityConfig {
     throws Exception {
         return authConfiguration.getAuthenticationManager(); //geramos nosso authenticationManager
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

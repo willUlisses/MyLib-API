@@ -28,13 +28,11 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<Author> post(@RequestBody AuthorDTO data) {
         Author authorToCreate = new Author(data.name(), data.nationality());
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(authorToCreate.getId())
                 .toUri();
+
         return ResponseEntity.created(location).body(authorToCreate);
     }
-
-
 }

@@ -18,8 +18,8 @@ public class BookService {
     }
 
     public Book postBook(Book book) {
-        if (book.getTitle() == null) {
-            throw new BookNotFoundException("Couldn't find any book with this title");
+        if (bookRepository.existsById(book.getId())){
+            throw new IllegalArgumentException("A book with the id " + book.getId() + " already exists");
         }
 
         return bookRepository.save(book);
@@ -27,7 +27,6 @@ public class BookService {
 
     public Book findBookByTitle(String title) {
         Optional<Book> optionalBook = bookRepository.findByTitle(title);
-
         return optionalBook.orElseThrow(() -> new BookNotFoundException("Couldn't find a book with the title " + title));
     }
 

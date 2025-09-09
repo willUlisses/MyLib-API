@@ -30,10 +30,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/authors").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/authors").hasAnyRole("AUTHOR", "ADMIN")
                 )
-                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class) // we add a filter that auths
-                //the Username and his password and get his authorities too
-                // criar um addFilterBefore jwt para adicionar antes desses aqui
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                // we add a filter that auths the Username and his password and get his authorities too
                 .build();
     }
 

@@ -33,12 +33,13 @@ classDiagram
     class UserRole {
         +UserRole ROLE_ADMIN
         +UserRole ROLE_CLIENT
+        +UserRole ROLE_AUTHOR
     }
 
     %% Relationships
-    Client "1" --> "0..*" Loan
+    User "1" --> "0..*" Loan
     Loan "1" --> "1" Book
     Book "1" --> "1" Author
-    Client --> UserRole
+    User --> UserRole
 
 ```

@@ -1,14 +1,9 @@
 package br.com.will.MyLibraryApi.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "book_tab")
@@ -16,6 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Book {
 
     @Id
@@ -31,19 +27,9 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "id_author")
     )
     private List<Author> author;
+    @Column(name = "available_copies")
+    private int availableCopies;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true) // loan vai conter a FK do livro
     private List<Loan> loans = new ArrayList<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(title, book.title);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title);
-    }
 }

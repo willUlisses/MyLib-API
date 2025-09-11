@@ -26,7 +26,7 @@ public class Loan {
     @JoinColumn(name = "id_user") //FK do usuario na tabela de junção
     private User user;
 
-    private LocalDateTime loanDate;
+    private final LocalDateTime loanDate = LocalDateTime.now();
     private final LocalDateTime returningDate = loanDate.plusMonths(2);
 
 

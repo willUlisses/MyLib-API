@@ -1,5 +1,6 @@
 package br.com.will.MyLibraryApi.Service;
 
+import br.com.will.MyLibraryApi.Exception.BookAlreadyExistsException;
 import br.com.will.MyLibraryApi.Exception.BookNotFoundException;
 import br.com.will.MyLibraryApi.Model.Book;
 import br.com.will.MyLibraryApi.Repository.BookRepository;
@@ -11,18 +12,30 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
     public Book postBook(Book book) {
-        if (bookRepository.existsById(book.getId())){
-            throw new IllegalArgumentException("A book with the id " + book.getId() + " already exists");
+        Optional<Book> alreadyExistingBook = bookRepository.findByTitle(book.getTitle());
+        if (alreadyExistingBook.isPresent()) {
+            throw new BookAlreadyExistsException("This book already exists, try to use a PUT or PATCH endpoint");
         }
-
         return bookRepository.save(book);
+    }
+
+    public Book updateBook(Long id, Book book) {
+        return bookRepository.findById(id)
+                .map(bookToUpdate -> {
+                    bookToUpdate.setTitle(book.getTitle());
+                    bookToUpdate.setAuthor(book.getAuthor());
+                    bookToUpdate.setAvailableCopies(book.getAvailableCopies() + 1);
+
+                    return bookRepository.save(book);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Book with id " + id + " not found"));
     }
 
     public Book findBookByTitle(String title) {

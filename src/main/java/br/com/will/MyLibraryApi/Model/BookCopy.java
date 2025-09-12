@@ -29,7 +29,7 @@ public class BookCopy {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @OneToMany
+    @OneToMany(mappedBy = "bookCopy")
     private List<Loan> loans = new ArrayList<>();
 
 

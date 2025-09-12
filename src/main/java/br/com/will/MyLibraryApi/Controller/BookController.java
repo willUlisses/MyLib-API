@@ -23,12 +23,18 @@ public class BookController {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/title")
     public ResponseEntity<Book> findByTitle(@RequestBody String title) {
         return new ResponseEntity<>(service.findBookByTitle(title), HttpStatus.FOUND);
     }
 
-    @DeleteMapping
+    @PostMapping
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        return new ResponseEntity<>(service.createBook(book), HttpStatus.CREATED);
+    }
+
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         service.deleteBookById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

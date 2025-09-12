@@ -19,8 +19,8 @@ public class Loan {
     private Long id;
 
     @ManyToOne // N empréstimos se referem a um livro, um livro está em N empréstimos
-    @JoinColumn(name = "id_book") // FK do livro na tabela de junção
-    private Book book;
+    @JoinColumn(name = "book_copy_id") // FK do livro na tabela de junção
+    private BookCopy bookCopy;
 
     @ManyToOne // N empréstimos para um usuario, um usuario tem N empréstimos
     @JoinColumn(name = "id_user") //FK do usuario na tabela de junção

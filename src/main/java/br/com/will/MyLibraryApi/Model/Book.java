@@ -26,14 +26,13 @@ public class Book {
 
     @ManyToMany // livros podem ter N autores e autor pode ter N livros
     @JoinTable(
-            name = "book_author",
+            name = "book_authors",
             joinColumns = @JoinColumn(name = "id_book"),
             inverseJoinColumns = @JoinColumn(name = "id_author")
     )
-    private List<Author> author;
-    @Column(name = "available_copies")
-    private int availableCopies;
+    private List<Author> authors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true) // loan vai conter a FK do livro
-    private List<Loan> loans = new ArrayList<>();
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true) // copy is going to contain book FK
+    private List<BookCopy> copies = new ArrayList<>();
+
 }

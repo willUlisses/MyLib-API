@@ -50,21 +50,7 @@ public class BookService {
         return savedBook;
     }
 
-    public Book addCopies(Long bookId, int numberOfCopies) {
-        Book bookToUpdate = bookRepository.findById(bookId)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
-        for (int i = 0; i < numberOfCopies; i++) {
-            BookCopy additionalCopy = new BookCopy();
-            additionalCopy.setInventoryCode(bookToUpdate.getTitle().substring(0,2) + "-" + bookToUpdate.getCopies().size() + 1);
-            additionalCopy.setBook(bookToUpdate);
-            additionalCopy.setStatus(CopyStatus.AVAILABLE);
-            copyRepository.save(additionalCopy);
-            bookToUpdate.getCopies().add(additionalCopy);
-        }
-
-        return bookRepository.save(bookToUpdate);
-    }
 
     public Book findBookByTitle(String title) {
         Optional<Book> optionalBook = bookRepository.findByTitle(title);

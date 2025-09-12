@@ -1,6 +1,8 @@
 package br.com.will.MyLibraryApi.Controller;
 
 import br.com.will.MyLibraryApi.Model.Book;
+import br.com.will.MyLibraryApi.Model.DTOs.BookDTO;
+import br.com.will.MyLibraryApi.Model.DTOs.BookWithCopiesDTO;
 import br.com.will.MyLibraryApi.Service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +31,15 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+    public ResponseEntity<Book> createBook(@RequestBody BookDTO data) {
+        Book book = new Book(data.title(), data.authors());
         return new ResponseEntity<>(service.createBook(book), HttpStatus.CREATED);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Book> createBookWithCopies(@RequestBody BookWithCopiesDTO data) {
+        Book newBook = new Book(data.title(), data.authors());
+        return new ResponseEntity<>(service.createBookWithCopies(newBook, data.numberOfCopies()), HttpStatus.CREATED);
     }
 
 

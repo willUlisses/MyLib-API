@@ -35,4 +35,10 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true) // copy is going to contain book FK
     private List<BookCopy> copies = new ArrayList<>();
 
+    public Book(String title, List<Author> authors){
+        this.title = title;
+        this.authors = authors;
+    };
+
+
 }

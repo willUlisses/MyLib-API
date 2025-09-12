@@ -20,6 +20,10 @@ public class Book {
     @Column(name = "book_title", length = 100, nullable = false)
     private String title;
 
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "IBC")
+    private Long internalBookCode;
+
     @ManyToMany // livros podem ter N autores e autor pode ter N livros
     @JoinTable(
             name = "book_author",

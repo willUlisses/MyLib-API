@@ -1,4 +1,4 @@
-package br.com.will.MyLibraryApi.Model;
+package br.com.will.MyLibraryApi.Model.Enumerations;
 
 public enum UserRole {
     USER("user"),

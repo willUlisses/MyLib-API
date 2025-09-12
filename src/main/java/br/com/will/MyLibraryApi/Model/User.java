@@ -1,5 +1,6 @@
 package br.com.will.MyLibraryApi.Model;
 
+import br.com.will.MyLibraryApi.Model.Enumerations.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

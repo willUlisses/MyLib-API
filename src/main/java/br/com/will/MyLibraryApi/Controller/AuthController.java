@@ -1,11 +1,9 @@
 package br.com.will.MyLibraryApi.Controller;
 
-import br.com.will.MyLibraryApi.Model.Author;
 import br.com.will.MyLibraryApi.Model.DTOs.AuthenticationDTO;
 import br.com.will.MyLibraryApi.Model.DTOs.LoginResponseDTO;
 import br.com.will.MyLibraryApi.Model.DTOs.UserDTO;
 import br.com.will.MyLibraryApi.Model.User;
-import br.com.will.MyLibraryApi.Model.UserRole;
 import br.com.will.MyLibraryApi.Repository.AuthorRepository;
 import br.com.will.MyLibraryApi.Repository.UserRepository;
 import br.com.will.MyLibraryApi.Security.TokenService;

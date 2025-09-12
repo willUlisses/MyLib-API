@@ -1,6 +1,6 @@
 package br.com.will.MyLibraryApi.Service;
 
-import br.com.will.MyLibraryApi.Exception.UserNotFoundException;
+import br.com.will.MyLibraryApi.Handlers.Exceptions.UserNotFoundException;
 import br.com.will.MyLibraryApi.Model.User;
 import br.com.will.MyLibraryApi.Repository.UserRepository;
 import org.springframework.stereotype.Service;

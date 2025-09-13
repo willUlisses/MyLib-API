@@ -2,27 +2,29 @@ package br.com.will.MyLibraryApi.Service;
 
 import br.com.will.MyLibraryApi.Handlers.Exceptions.BookAlreadyExistsException;
 import br.com.will.MyLibraryApi.Handlers.Exceptions.BookNotFoundException;
+import br.com.will.MyLibraryApi.Model.Author;
 import br.com.will.MyLibraryApi.Model.Book;
 import br.com.will.MyLibraryApi.Model.BookCopy;
 import br.com.will.MyLibraryApi.Model.Enumerations.CopyStatus;
+import br.com.will.MyLibraryApi.Repository.AuthorRepository;
 import br.com.will.MyLibraryApi.Repository.BookRepository;
 import br.com.will.MyLibraryApi.Repository.CopyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
     private final CopyRepository copyRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository, CopyRepository copyRepository) {
+    public BookService(BookRepository bookRepository, CopyRepository copyRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.copyRepository = copyRepository;
+        this.authorRepository = authorRepository;
     }
 
     public Book createBook(Book book) {
@@ -30,10 +32,33 @@ public class BookService {
         if (alreadyExistingBook.isPresent()) {
             throw new BookAlreadyExistsException("This book already exists, try to use a PUT or PATCH endpoint");
         }
+
+        List<Long> bookAuthorsIds = book.getAuthors().stream()
+                .map(Author::getId)
+                .toList();
+
+        List<Author> existingBookAuthors = authorRepository.findByIdIn(bookAuthorsIds);
+
+        if (existingBookAuthors.size() != bookAuthorsIds.size()) {
+            throw new IllegalArgumentException("Some authors of this book are not registered in the system");
+        }
+
+        book.setAuthors(existingBookAuthors);
         return bookRepository.save(book);
     }
 
     public Book createBookWithCopies(Book book, int numberOfCopies) {
+        List<Long> bookAuthorsIds = book.getAuthors().stream()
+                .map(Author::getId)
+                .toList();
+
+        List<Author> existingBookAuthors = authorRepository.findByIdIn(bookAuthorsIds);
+
+        if (existingBookAuthors.size() != bookAuthorsIds.size()) {
+            throw new IllegalArgumentException("Some authors of this book are not registered in the system");
+        }
+
+        book.setAuthors(existingBookAuthors);
         Book savedBook = bookRepository.save(book);
 
         List<BookCopy> copies = new ArrayList<>(); // we create a list of copies that will be added with the book
